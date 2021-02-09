@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="userViewModel"
+            type="com.example.goodrequestdemo.ui.user_detail.UserViewModel" />
+
+        <import type="com.example.goodrequestdemo.data.Status"/>
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/user_item_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="@dimen/user_detail_image_size"
+            android:layout_height="@dimen/user_detail_image_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@color/white"
+            app:loadImage="@{userViewModel.loadedUser.avatar}" />
+
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{userViewModel.loadingState.status == Status.RUNNING, default = gone}"
+            />
+
+        <LinearLayout
+            android:id="@+id/nameRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logo">
+
+            <TextView
+                android:id="@+id/nameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nameLabel"
+                android:textSize="@dimen/labelSize" />
+
+            <TextView
+                android:id="@+id/nameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:text="@{userViewModel.loadedUser.fullName}"
+                tools:text="Janko Hrasko" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/emailRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameRow">
+
+            <TextView
+                android:id="@+id/emailLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/emailTextView"
+                android:text="@string/emailLabel"
+                android:textSize="@dimen/labelSize" />
+
+            <TextView
+                android:id="@+id/emailTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:text="@{userViewModel.loadedUser.email}"
+                tools:text="jankohrasko420@gmail.com" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/retryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailRow"
+            android:text="@string/refresh"
+            android:onClick="@{() -> userViewModel.reloadUser()}"
+            />
+
+        <TextView
+            app:layout_constraintTop_toTopOf="@+id/retryButton"
+            app:layout_constraintEnd_toStartOf="@+id/retryButton"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:text="@{userViewModel.loadingState.message}"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
